@@ -1,0 +1,7 @@
+.vscode/
+.DS_Store/
+node_modules/
+<<<<<<< HEAD
+=======
+tmpFile/
+>>>>>>> e253a63fef47b386162fc3dbd39a617f3e31cab0
