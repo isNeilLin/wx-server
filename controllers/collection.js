@@ -65,11 +65,7 @@ const add = async(ctx, next)=>{
 const del = async(ctx, next)=>{
     const { userId, id } = ctx.request.body
     try{
-        let collection = collectionModel.findOne({
-            where: {
-                collectionId: id
-            }
-        })
+        let collection = await collectionModel.findById(id)
         if(collection&&collection.userId==userId){
             await collection.destroy()
             ctx.body = {

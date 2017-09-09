@@ -19,6 +19,6 @@ module.exports = function (sequelize,Datatypes){
             type: Datatypes.STRING
         }
     },{
-        tableName: 'user'
+        tableName: 'collection'
     })
 }
