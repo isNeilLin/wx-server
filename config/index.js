@@ -1,6 +1,5 @@
 const COS = require('cos-nodejs-sdk-v5');
-// const ENV = 'prd';
-const ENV = 'dev';
+const ENV = process.env.WXAPP ? 'prd' : 'dev';
 const password = ENV === 'dev' ? '123456' : 'admin666';
 const mysql = {
     host: '127.0.0.1',

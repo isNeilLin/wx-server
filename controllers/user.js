@@ -2,6 +2,7 @@ const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
 const loadModel = require('../db.js')
 const userModel = loadModel('user')
+const wxModel =loadModel('wxuser')
 const util = require('../util')
 const { user } = require('../config')
 const secret = user.secret;
@@ -197,7 +198,47 @@ const del = async(ctx, next)=>{
 
 const login = async(ctx, next)=>{
     const { username, password } = ctx.request.body;
-    console.log(username, password)
+    //微信小程序登录
+    if(!password&&username.indexOf('wx')!==-1&&ctx.request.body.type==='wx'){
+        try{
+            const user = await wxModel.findOne({
+                where: {
+                    username
+                }
+            })
+            console.log(user)
+            if(!user){
+                const create = util.now()
+                await wxModel.create({
+                    username,
+                    create
+                })
+            }
+            let curUser = await wxModel.findOne({
+                where: {
+                    username
+                }
+            })
+            console.log(curUser)
+            let token = createToken({
+                username: username,
+                userId: curUser.id
+            })
+            ctx.body = {
+                code: 0,
+                token: token,
+                id: curUser.id
+            }
+        }catch(e){
+            console.log(e)
+            ctx.body = {
+                code: 1,
+                stack: e
+            }
+        }
+        return
+    }
+    //后台管理登录
     const user = await userModel.findOne({
         where: {
             username
